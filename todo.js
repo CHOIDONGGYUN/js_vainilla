@@ -4,7 +4,23 @@ const toDoform = document.querySelector(".js-toDoForm"),
 
 const TODOS_LS = "toDos";
 
-const toDos = [];
+let toDos = [];
+
+function deleteToDo(event) {
+    const btn = event.target;
+    const li = btn.parentNode;
+    // li를 삭제
+    toDoList.removeChild(li);
+    // list새로 재설정
+    // filter 메소드는 배열을 모두 작동시켜 ()의 조건이 true라면 얻고 false는 안 얻어서 새로운 배열
+    const cleanToDos = toDos.filter(function(toDo) {
+        return toDo.id !== li.id;
+    });
+
+    // 새로 얻은 배열을 현재 배열로 바꾸기
+    toDos = cleanToDos;
+    saveToDos();
+}
 
 function saveToDos() {
     // 로컬 스토지는 자바스크립트의 data를 저장할수가 없다
@@ -21,6 +37,7 @@ function paintToDo(text) {
     const newId = toDos.length + 1;
 
     delbtn.innerText = "X"
+    delbtn.addEventListener("click", deleteToDo);
     span.innerText = text;
     li.appendChild(delbtn);
     li.appendChild(span);
